@@ -1,8 +1,8 @@
-## Getting Started
+## Iniciando
 
-### Setup
+### Setup (Configuração)
 
-To get a quick taste of using Vue Test Utils, clone our demo repository with basic setup and install the dependencies:
+Para ter um rápida noção do uso do Vue Test Utils, clone nosso repositório demostrativo com setup (configuração) básica e instale as dependências:
 
 ```bash
 git clone https://github.com/vuejs/vue-test-utils-getting-started
@@ -10,7 +10,7 @@ cd vue-test-utils-getting-started
 npm install
 ```
 
-You will see that the project includes a simple component, `counter.js`:
+Você verá que o projeto inclui um component simples, `counter.js`:
 
 ```js
 // counter.js
@@ -37,43 +37,43 @@ export default {
 }
 ```
 
-### Mounting Components
+### Montando Componentes
 
-Vue Test Utils tests Vue components by mounting them in isolation, mocking the necessary inputs (props, injections and user events) and asserting the outputs (render result, emitted custom events).
+Vue Test Utils testa componentes Vue ao montá-los em isolamento, 'mockando' as entradas necessárias (propriedades, injeções e eventos de usuário) e assertindo as saídas (resultados renderizados, eventos personalizados emitidos).
 
-Mounted components are returned inside a [Wrapper](../api/wrapper/), which exposes many convenience methods for manipulating, traversing and querying the underlying Vue component instance.
+Componentes Montados são retornados dentro de um [Embrulho (Wrapper)](../api/wrapper/), que expõe muitos métodos convenientes para manipular, examinar e consultar a instância subjacente do componente Vue.
 
-You can create wrappers using the `mount` method. Let's create a file called `test.js`:
+Você pode criar um embrulho usando o método `mount`. Vamos criar um arquivo chamado `test.js`:
 
 ```js
 // test.js
 
-// Import the `mount()` method from the test utils
-// and the component you want to test
+// Importe o método `mount()` dos utilitários de teste
+// e o componente que você quer testar
 import { mount } from '@vue/test-utils'
 import Counter from './counter'
 
-// Now mount the component and you have the wrapper
+// Agora monte o componente e você terá o embrulho
 const wrapper = mount(Counter)
 
-// You can access the actual Vue instance via `wrapper.vm`
+// Você pode acessar a instância atual do Vue via `wrapper.vm`
 const vm = wrapper.vm
 
-// To inspect the wrapper deeper just log it to the console
-// and your adventure with the Vue Test Utils begins
+// Para inspecionar o embrulho mais profundamente basta logá-lo para o console
+// e a sua aventura com o Vue Test Utils começa
 console.log(wrapper)
 ```
 
-### Test rendered HTML output of the component
+### Teste HTML renderizado pela saída do componente
 
-Now that we have the wrapper, the first thing we can do is to verify that the rendered HTML output of the component matches what is expected.
+Agora que nós temos o embrulho, a primeira coisa que nós podemos fazer é verificar que o HTML rederizado pela saída do componente casa com o que é esperado.
 
 ```js
 import { mount } from '@vue/test-utils'
 import Counter from './counter'
 
 describe('Counter', () => {
-  // Now mount the component and you have the wrapper
+  // Agora monte o componente e você tem o embrulho
   const wrapper = mount(Counter)
 
   it('renders the correct markup', () => {
@@ -81,17 +81,18 @@ describe('Counter', () => {
   })
 
   // it's also easy to check for the existence of elements
+  // também é fácil checar a existência dos elementos
   it('has a button', () => {
     expect(wrapper.contains('button')).toBe(true)
   })
 })
 ```
 
-Now run the tests with `npm test`. You should see the tests passing.
+Agora execute os testes com `npm test`. Você deve ver os testes passando.
 
-### Simulating User Interaction
+### Simulando Interação de Usuário
 
-Our counter should increment the count when the user clicks the button. To simulate the behavior, we need to first locate the button with `wrapper.find()`, which returns a **wrapper for the button element**. We can then simulate the click by calling `.trigger()` on the button wrapper:
+Nosso contador (counter) deve incrementar a conta (count) quando o usuário clicar no botão. Para simular o comportamento, nós precisamos primeiro localizar o botão com `wrapper.find()`, que retorna um embrulho para o elemento botão (button). Nós podemos então simular o clique ao chamar `.trigger()` no botão do embrulho.
 
 ```js
 it('button click should increment the count', () => {
@@ -102,18 +103,18 @@ it('button click should increment the count', () => {
 })
 ```
 
-### What about `nextTick`?
+### E quanto a `nextTick`?
 
-Vue batches pending DOM updates and applies them asynchronously to prevent unnecessary re-renders caused by multiple data mutations. This is why in practice we often have to use `Vue.nextTick` to wait until Vue has performed the actual DOM update after we trigger some state change.
+Vue criar lotes de atualizações do DOM pendentes e os aplica assincronamente para evitar novas renderizações desnecessárias. Esse é o porquê de, na prática, geralmente nós usarmos `Vue.nextTick` para esperar até que o Vue desempenhe a atualização efetiva do DOM depois que disparamos alguma mudança de estado.
 
-To simplify usage, Vue Test Utils applies all updates synchronously so you don't need to use `Vue.nextTick` to wait for DOM updates in your tests.
+Para simplificar o uso, Vue Test Utils, aplica todas as atualizações sincronamente tanto que você não precisa usar `Vue.nextTick` para esperar por atualizações em seus testes.
 
-_Note: `nextTick` is still necessary when you need to explictly advance the event loop, for operations such as asynchronous callbacks or promise resolution._
+_Nota: `nextTick` ainda é necessário quando você precisa explicitamente avançar o laço de evento, para operações tais como chamadas assíncronas ou resolução de promessas (promises)._
 
-If you do still need to use `nextTick` in your test files, be aware that any errors thrown inside it may not be caught by your test runner as it uses promises internally. There are two approaches to fixing this: either you can set the `done` callback as Vue's global error handler at the start of the test, or you can call `nextTick` without an argument and return it as a promise:
+Se você ainda precisar usar `nextTick` em seus arquivos de teste, esteja ciente que qualquer erro é disparado dentro dele não pode ser capturado pelo seu executor de testes (test runner) posto que ele usa promessas (promises) internamente. Existem dois jeitos para corrigir isso: ou você pode configurar o método de callback `done` como um tratador de erro global do Vue no início do teste, ou você pode chamar `nextTick` sem nenhum argumento e retorná-lo como uma promessa.
 
 ```js
-// this will not be caught
+// isso não será capturado
 it('will time out', done => {
   Vue.nextTick(() => {
     expect(true).toBe(false)
@@ -121,7 +122,7 @@ it('will time out', done => {
   })
 })
 
-// the two following tests will work as expected
+// os dois testes seguintes irão trabalhar como esperado
 it('will catch the error using done', done => {
   Vue.config.errorHandler = done
   Vue.nextTick(() => {
@@ -137,7 +138,7 @@ it('will catch the error using a promise', () => {
 })
 ```
 
-### What's Next
+### O que vem depois
 
-- Integrate Vue Test Utils into your project by [choosing a test runner](./choosing-a-test-runner.md).
-- Learn more about [common techniques when writing tests](./common-tips.md).
+- Integrar o Vue Test Utils em seu projeto ao [escolher um executor de testes](./choosing-a-test-runner.md).
+- Aprenda mais sobre [técnicas comuns quando se escreve testes](./common-tips.md).
