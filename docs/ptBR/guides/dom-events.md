@@ -1,8 +1,8 @@
-## Testing Key, Mouse and other DOM events
+## Testando Teclado, Mouse e outros eventos DOM
 
-### Trigger events
+### Disparando eventos
 
-The `Wrapper` exposes a `trigger` method. It can be used to trigger DOM events.
+O `Wrapper` expõe um método `trigger`. Ele pode ser usado para disparar eventos DOM.
 
 ```js
 const wrapper = mount(MyButton)
@@ -10,7 +10,7 @@ const wrapper = mount(MyButton)
 wrapper.trigger('click')
 ```
 
-You should be aware that the `find` method returns a `Wrapper` as well. Assuming `MyComponent` contains a button, the following code clicks the button.
+Você deve estar ciente que o método `find` retorna um `Wrapper` também. Supondo que `MyComponent` contém um botão, o seguinte código dispara um clique do mesmo.
 
 ```js
 const wrapper = mount(MyComponent)
@@ -18,11 +18,11 @@ const wrapper = mount(MyComponent)
 wrapper.find('button').trigger('click')
 ```
 
-### Options
+### Opções
 
-The `trigger` method takes an optional `options` object. The properties in the `options` object are added to the Event.
+O método `trigger` aceita um objeto opcional chamado `options`. As propriedades em `options` são adicionadas ao Evento.
 
-Note that target cannot be added in the `options` object.
+Note que target não pode ser adicionado ao objeto `options`.
 
 ```js
 const wrapper = mount(MyButton)
@@ -30,9 +30,9 @@ const wrapper = mount(MyButton)
 wrapper.trigger('click', { button: 0 })
 ```
 
-### Mouse Click Example
+### Clique do Mouse - Exemplo
 
-**Component under test**
+**Componente sob teste**
 
 ```html
 <template>
@@ -64,7 +64,7 @@ wrapper.trigger('click', { button: 0 })
 </script>
 ```
 
-**Test**
+**Teste**
 
 ```js
 import YesNoComponent from '@/components/YesNoComponent'
@@ -86,11 +86,11 @@ describe('Click event', () => {
 })
 ```
 
-### Keyboard Example
+### Teclado - Exemplo
 
-**Component under test**
+**Componente sob teste**
 
-This component allows to increment/decrement the quantity using various keys.
+Este componente permite incrementar/decrementar a quantidade usando várias teclas.
 
 ```html
 <template>
@@ -144,7 +144,7 @@ This component allows to increment/decrement the quantity using various keys.
 </script>
 ```
 
-**Test**
+**Teste**
 
 ```js
 import QuantityComponent from '@/components/QuantityComponent'
@@ -186,28 +186,28 @@ describe('Key event tests', () => {
 })
 ```
 
-**Limitations**
+**Limitações**
 
-A key name after the dot `keydown.up` is translated to a `keyCode`. This is supported for the following names:
+Um nome de tecla após um ponto tal qual `keydown.up` é traduzido pra um `keyCode`. Isto é interpretado para os seguintes nomes:
 
-| key name  | key code |
-| --------- | -------- |
-| enter     | 13       |
-| esc       | 27       |
-| tab       | 9        |
-| space     | 32       |
-| delete    | 46       |
-| backspace | 8        |
-| insert    | 45       |
-| up        | 38       |
-| down      | 40       |
-| left      | 37       |
-| right     | 39       |
-| end       | 35       |
-| home      | 36       |
-| pageup    | 33       |
-| pagedown  | 34       |
+| tecla     | código |
+| --------- | ------ |
+| enter     | 13     |
+| esc       | 27     |
+| tab       | 9      |
+| space     | 32     |
+| delete    | 46     |
+| backspace | 8      |
+| insert    | 45     |
+| up        | 38     |
+| down      | 40     |
+| left      | 37     |
+| right     | 39     |
+| end       | 35     |
+| home      | 36     |
+| pageup    | 33     |
+| pagedown  | 34     |
 
-### Important
+### Importante
 
-Vue Test Utils triggers event synchronously. Consequently, `Vue.nextTick` is not required.
+Vue Test Utils dispara eventos de maneira síncrona. Consequentemente, `Vue.nextTick` não é requerido.
