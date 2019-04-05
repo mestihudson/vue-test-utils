@@ -1,20 +1,21 @@
-## Testing Single-File Components with Jest
+## Testando Componentes de Arquivo-Simples com Jest
 
-> An example project for this setup is available on [GitHub](https://github.com/vuejs/vue-test-utils-jest-example).
+> Um exemplo de projeto para essa configuração está disponível em [GitHub](https://github.com/vuejs/vue-test-utils-jest-example).
 
-Jest is a test runner developed by Facebook, aiming to deliver a battery-included unit testing solution. You can learn more about Jest on its [official documentation](https://jestjs.io/).
+Jest é um executor de testes desenvolvido pelo Facebook, visando entregar uma solução para testes unitários que já venham com 'baterias inclusas', como se costuma dizer. Você pode aprender mais sobre Jest na página de sua [documentação oficial](https://jestjs.io/).
 
-#### Setting up Jest
+#### Configurando o Jest
 
-We will assume you are starting with a setup that already has webpack, vue-loader and Babel properly configured - e.g. the `webpack-simple` template scaffolded by `vue-cli`.
+Nós vamos supor que você está iniciando com uma configuração que já inclui o webpack, vue-loader e Babel devidamente estabelecida - por exemplo, o modelo `webpack-simple` gerado pelo `vue-cli`.
 
 The first thing to do is install Jest and Vue Test Utils:
+A primeira coisa a fazer é instalar o Jest e o Vue Test Utils:
 
 ```bash
 $ npm install --save-dev jest @vue/test-utils
 ```
 
-Next we need to define a test script in our `package.json`.
+Depois nós precisamos definir um script de teste em nosso `package.json`.
 
 ```json
 // package.json
@@ -25,15 +26,15 @@ Next we need to define a test script in our `package.json`.
 }
 ```
 
-### Processing Single-File Components in Jest
+### Processando Componentes de Arquivo-Simples no Jest
 
-To teach Jest how to process `*.vue` files, we will need to install and configure the `vue-jest` preprocessor:
+Para ensinar ao Jest como processar arquivos `*.vue`, nós vamos precisar instalar e configurar o pré-processador `vue-jest`:
 
 ```bash
 npm install --save-dev vue-jest
 ```
 
-Next, create a `jest` block in `package.json`:
+Depois, criar um bloco `jest` em `package.json`:
 
 ```json
 {
@@ -42,29 +43,30 @@ Next, create a `jest` block in `package.json`:
     "moduleFileExtensions": [
       "js",
       "json",
-      // tell Jest to handle `*.vue` files
+      // diz ao Jest que ele deve tratar arquivos `*.vue`
       "vue"
     ],
     "transform": {
-      // process `*.vue` files with `vue-jest`
+      // processa arquivos `*.vue` com `vue-jest`
       ".*\\.(vue)$": "vue-jest"
     }
   }
 }
 ```
 
-> **Note:** `vue-jest` currently does not support all the features of `vue-loader`, for example custom block support and style loading. In addition, some webpack-specific features such as code-splitting are not supported either. To use these unsupported features, you need to use Mocha instead of Jest to run your tests, and webpack to compile your components. To get started, read the guide on [testing SFCs with Mocha + webpack](./testing-single-file-components-with-mocha-webpack.md).
+> **Nota:** `vue-jest` atualmente não dá suporte a todas as funcionalidades do `vue-loader`, por exemplo, suporte a blocos personalizados e carga de estilos. Além disso, algumas funcionalidade específicas do webpack tais como code-splitting (divisão de código em vários arquivos/módulos), também não são suportadas. Para usar essas características não suportadas, você precisa usar o Mocha ao invés do Jest para rodas seus testes, e webpack para compilar seus componentes. Para começar, leia o guia em [testando SFCs com Mocha + webpack](./testing-single-file-components-with-mocha-webpack.md).
 
-### Handling webpack Aliases
+### Tratando Atalhos (Aliases) com webpack
 
 If you use a resolve alias in the webpack config, e.g. aliasing `@` to `/src`, you need to add a matching config for Jest as well, using the `moduleNameMapper` option:
+Se você usa um resolvedor de atalho na configuração do webpack, por exemplo, que leve `@` para `/src`, você precisa adicionar uma configuração de reconhecimento de padrão para o Jest também, usando a opção `moduleNameMapper`:
 
 ```json
 {
   // ...
   "jest": {
     // ...
-    // support the same @ -> src alias mapping in source code
+    // adiciona o suporte para que `@` seja mapeado, através de um atalho, para `src`, no código fonte
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
     }
@@ -72,17 +74,17 @@ If you use a resolve alias in the webpack config, e.g. aliasing `@` to `/src`, y
 }
 ```
 
-### Configuring Babel for Jest
+### Configurando o Babel para o Jest
 
 <!-- todo ES modules has been supported in latest versions of Node -->
 
-Although latest versions of Node already supports most ES2015 features, you may still want to use ES modules syntax and stage-x features in your tests. For that we need to install `babel-jest`:
+Apesar de as últimas versões do Node já suportarem muitas das funcionalidades do ES2015, você pode ainda querer usar a sintaxe do ES e as funcionalidades em estágio-x (stage-x) em seus testes. Para isso nós precisamos instalar o  `babel-jest`:
 
 ```bash
 npm install --save-dev babel-jest
 ```
 
-Next, we need to tell Jest to process JavaScript test files with `babel-jest` by adding an entry under `jest.transform` in `package.json`:
+Depois, nós precisamos dizer ao Jest para processar arquivos de teste JavaScript com `babel-jest` adicionando uma entrada sob a propriedade `jest.transform` no `package.json`:
 
 ```json
 {
@@ -91,7 +93,7 @@ Next, we need to tell Jest to process JavaScript test files with `babel-jest` by
     // ...
     "transform": {
       // ...
-      // process js with `babel-jest`
+      // processa arquivos js com o `babel-jest`
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
     }
     // ...
@@ -99,15 +101,15 @@ Next, we need to tell Jest to process JavaScript test files with `babel-jest` by
 }
 ```
 
-> By default, `babel-jest` automatically configures itself as long as it's installed. However, because we have explicitly added a transform for `*.vue` files, we now need to explicitly configure `babel-jest` as well.
+> Por padrão, `babel-jest` automaticamente se configura tão logo ele seja instalado. Todavia, uma vez que nós tenhamos explicitamente adicionado uma transformação para arquivos `*.vue`, nós agora precisamos explicitamente configurá-lo para o `babel-jest` também.
 
-Assuming using `babel-preset-env` with webpack, the default Babel config disables ES modules transpilation because webpack already knows how to handle ES modules. However, we do need to enable it for our tests because Jest tests run directly in Node.
+Assumindo o uso do `babel-preset-env` com webpack, a configuração padrão do Babel desabilita a transpilação de módulos ES porque o webpack já sabe como tratá-los. No entanto, nós precisamos habilitá-lo para nossos testes porque os testes do Jest executam diretamente no Node.
 
-Also, we can tell `babel-preset-env` to target the Node version we are using. This skips transpiling unnecessary features and makes our tests boot faster.
+Também, nós podemos dizer ao `babel-preset-env` para direcionar para a versão do Node que estamos usando. Isto pula funcionalidades de transpilação desnecessárias e faz nossos testes bem mais rápidos.
 
-To apply these options only for tests, put them in a separate config under `env.test` (this will be automatically picked up by `babel-jest`).
+Para aplicar essas opções somente para os testes, ponha-os em uma configuração separada sob a `env.test` (isto será automaticamente captado pelo `babel-jest`)
 
-Example `.babelrc`:
+Exemplo `.babelrc`:
 
 ```json
 {
@@ -120,17 +122,18 @@ Example `.babelrc`:
 }
 ```
 
-### Placing Test Files
+### Colocando Arquivos de Test
 
-By default, Jest will recursively pick up all files that have a `.spec.js` or `.test.js` extension in the entire project. If this does not fit your needs, it's possible [to change the `testRegex`](https://jestjs.io/docs/en/configuration#testregex-string-array-string) in the config section in the `package.json` file.
+Por padrão, o Jest recursivamente detectará todos os arquivos cujas extensões sejam `.spec.js` ou `.test.js` no projeto inteiro. Se isso não se encaixar em suas necessidades, é possível [mudar a propriedade `testRegex`](https://jestjs.io/docs/en/configuration#testregex-string-array-string) na sessão de configuração do arquivo `package.json`.
 
 Jest recommends creating a `__tests__` directory right next to the code being tested, but feel free to structure your tests as you see fit. Just beware that Jest would create a `__snapshots__` directory next to test files that performs snapshot testing.
+Jest recomenda criar um diretório chamado `__tests__` no mesmo local do código a ser testado, mas sinta-se livre para estruturar seus testes como você achar melhor. Apenas esteja ciente que o Jest criaria um diretório chamado `__snapshots__` para os arquivos de que executam testes daquele tipo.
 
-### Coverage
+### Cobertura
 
-Jest can be used to generate coverage reports in multiple formats. The following is a simple example to get started with:
+Jest pode ser usado para gerar relatórios de cobertura em múltiplos formatos. A seguir um exemplo simples para começar:
 
-Extend your `jest` config (usually in `package.json` or `jest.config.js`) with the [`collectCoverage`](https://jestjs.io/docs/en/configuration#collectcoverage-boolean) option, and then add the [`collectCoverageFrom`](https://jestjs.io/docs/en/configuration#collectcoveragefrom-array) array to define the files for which coverage information should be collected.
+Extenda sua configuração `jest` (geralmente no arquivo `package.json` ou no arquivo `jest.config.js`) com a opção [`collectCoverage`](https://jestjs.io/docs/en/configuration#collectcoverage-boolean), e então adicionar a array/opção [`collectCoverageFrom`](https://jestjs.io/docs/en/configuration#collectcoveragefrom-array) para definir os arquivos para os quais a informação de cobertura deverá ser coletada.
 
 ```json
 {
@@ -143,6 +146,7 @@ Extend your `jest` config (usually in `package.json` or `jest.config.js`) with t
 ```
 
 This will enable coverage reports with the [default coverage reporters](https://jestjs.io/docs/en/configuration#coveragereporters-array-string). You can customise these with the `coverageReporters` option:
+Isto habilitará os relatórios de cobertura com o [tipo padrão](https://jestjs.io/docs/en/configuration#coveragereporters-array-string). Você pode personalizar estas com a opção `coverageReporters`:
 
 ```json
 {
@@ -153,11 +157,11 @@ This will enable coverage reports with the [default coverage reporters](https://
 }
 ```
 
-Further documentation can be found in the [Jest configuration documentation](https://jestjs.io/docs/en/configuration#collectcoverage-boolean), where you can find options for coverage thresholds, target output directories, etc.
+Documentação adicional pode ser encontrada na [sessão de configuração correspondente do Jest](https://jestjs.io/docs/en/configuration#collectcoverage-boolean), onde você pode achar opções para cobertura de limites, diretórios de saída, etc.
 
-### Example Spec
+### Exemplo de Especificação (Spec)
 
-If you are familiar with Jasmine, you should feel right at home with Jest's [assertion API](https://jestjs.io/docs/en/expect#content):
+Se você está familiarizado com Jasmine, você deve se sentir em casa com a [API de asserções](https://jestjs.io/docs/en/expect#content) do Jest:
 
 ```js
 import { mount } from '@vue/test-utils'
@@ -171,9 +175,9 @@ describe('Component', () => {
 })
 ```
 
-### Snapshot Testing
+### Teste de Instantâneo (Snapshot)
 
-When you mount a component with Vue Test Utils, you get access to the root HTML element. This can be saved as a snapshot for [Jest snapshot testing](https://jestjs.io/docs/en/snapshot-testing):
+Quando você monta um componente com o Vue Test Utils, você tem acesso ao elemento raiz do HTML. Isto pode ser salvo na forma de um instantâneo pelo uso do [teste de instantâneo do Jest]:
 
 ```js
 test('renders correctly', () => {
@@ -182,28 +186,28 @@ test('renders correctly', () => {
 })
 ```
 
-We can improve the saved snapshot with a custom serializer:
+Nós podemos melhorar o instantâneo salvo com um serializador personalizado:
 
 ```bash
 npm install --save-dev jest-serializer-vue
 ```
 
-Then configure it in `package.json`:
+Então configure-o no `package.json`:
 
 ```json
 {
   // ...
   "jest": {
     // ...
-    // serializer for snapshots
+    // serializador para instantâneos
     "snapshotSerializers": ["jest-serializer-vue"]
   }
 }
 ```
 
-### Resources
+### Recursos
 
-- [Example project for this setup](https://github.com/vuejs/vue-test-utils-jest-example)
-- [Examples and slides from Vue Conf 2017](https://github.com/codebryo/vue-testing-with-jest-conf17)
+- [Exemplo de projeto para esta configuração](https://github.com/vuejs/vue-test-utils-jest-example)
+- [Exemplos e slides da Vue Conf 2017](https://github.com/codebryo/vue-testing-with-jest-conf17)
 - [Jest](https://jestjs.io/)
 - [Babel preset env](https://github.com/babel/babel-preset-env)
