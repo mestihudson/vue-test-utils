@@ -8,7 +8,6 @@ Jest é um executor de testes desenvolvido pelo Facebook, visando entregar uma s
 
 Nós vamos supor que você está iniciando com uma configuração que já inclui o webpack, vue-loader e Babel devidamente estabelecida - por exemplo, o modelo `webpack-simple` gerado pelo `vue-cli`.
 
-The first thing to do is install Jest and Vue Test Utils:
 A primeira coisa a fazer é instalar o Jest e o Vue Test Utils:
 
 ```bash
