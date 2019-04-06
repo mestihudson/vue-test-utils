@@ -1,20 +1,20 @@
 ## Testando Componentes de Arquivo-Simples com Karma
 
-> An example project for this setup is available on [GitHub](https://github.com/eddyerburgh/vue-test-utils-karma-example).
+> Um exemplo de projeto para essa configuração está disponível no [GitHub](https://github.com/eddyerburgh/vue-test-utils-karma-example).
 
-Karma is a test runner that launches browsers, runs tests, and reports them back to us. We're going to use the Mocha framework to write the tests. We'll use the chai library for test assertions.
+Karma é um executor de testes que inicia navegadores, roda testes, e relata seus resultados como saída. Nós vamos usar o framework Mocha framework para escrever os testes. Iremos usar a biblioteca Chai para as asserções dos testes.
 
-### Setting up Mocha
+### Configurando o Mocha
 
-We will assume you are starting with a setup that already has webpack, vue-loader and Babel properly configured - e.g. the `webpack-simple` template scaffolded by `vue-cli`.
+Nós vamos supor que você está iniciando com uma configuração que já inclui o webpack, vue-loader e Babel devidamente estabelecida - por exemplo, o modelo `webpack-simple` gerado pelo `vue-cli`.
 
-The first thing to do is install the test dependencies:
+A primeira coisa a fazer é instalar as dependências de teste:
 
 ```bash
 npm install --save-dev @vue/test-utils karma karma-chrome-launcher karma-mocha karma-sourcemap-loader karma-spec-reporter karma-webpack mocha
 ```
 
-Next we need to define a test script in our `package.json`.
+Depois precisaremos definir um script `test` em nosso `package.json`.
 
 ```json
 // package.json
@@ -25,11 +25,11 @@ Next we need to define a test script in our `package.json`.
 }
 ```
 
-- The `--single-run` flag tells Karma to run the test suite once.
+- A opção `--single-run` diz ao Karma para executar o conjunto de testes apenas uma vez.
 
-### Karma Configuration
+### Configuração do Karma
 
-Create a `karma.conf.js` file in the index of the project:
+Crie um arquivo `karma.conf.js` na pasta raiz do projeto:
 
 ```js
 // karma.conf.js
@@ -55,25 +55,25 @@ module.exports = function(config) {
 }
 ```
 
-This file is used to configure Karma.
+Este arquivo é usado para configurar o Karma.
 
-We need to preprocess our files with webpack. to do that, we add webpack as a preprocessor, and include our webpack config. We can use the webpack config file in the base of the project without changing anything.
+Precisamos pré-processar nossos arquivos com o webpack, para tanto, adicionamos o citado como um, e incluímos nossa configuração referente ao mesmo. Podemos usar o arquivo de configuração do webpack na base do projeto sem mudar nada.
 
-In our configuration, we run the tests in Chrome. To add extra browsers, see [the Browsers section in the Karma docs](http://karma-runner.github.io/2.0/config/browsers.html).
+Em nossa configuração, executamos os testes no Chrome. Para adicionar navegadores extra, veja [a sessão de Navegadores na documentação do Karma](http://karma-runner.github.io/2.0/config/browsers.html).
 
-### Picking an Assertion Library
+### Pegando uma Biblioteca de Asserção
 
-[Chai](http://chaijs.com/) is a popular assertion library that is commonly used alongside Mocha. You may also want to check out [Sinon](http://sinonjs.org/) for creating spies and stubs.
+[Chai](http://chaijs.com/) é uma biblioteca de asserção popular que é comumente utilizada junto ao Mocha. Você pode querer dar uma olhada também em [Sinon](http://sinonjs.org/) para criar espiões e dublês.
 
-We can install the `karma-chai` plugin to use `chai` in our tests.
+Nós podemos instalar o plugin `karma-chai` para usar o `chai` em nossos testes.
 
 ```bash
 npm install --save-dev karma-chai
 ```
 
-### Adding a test
+### Adicionando um teste
 
-Create a file in `src` named `Counter.vue`:
+Crie um arquivo em `src` chamado `Counter.vue`:
 
 ```html
 <template>
@@ -100,7 +100,7 @@ Create a file in `src` named `Counter.vue`:
 </script>
 ```
 
-And create a test file named `test/Counter.spec.js` with the following code:
+E crie um arquivo de teste chamado `test/Counter.spec.js` com o seguinte código:
 
 ```js
 import { expect } from 'chai'
@@ -116,33 +116,33 @@ describe('Counter.vue', () => {
 })
 ```
 
-And now we can run the tests:
+E agora podemos executar os testes:
 
 ```
 npm run test
 ```
 
-Woohoo, we got our tests running!
+Uhuuuu, nossos testes estão rodando!
 
-### Coverage
+### Cobertura
 
-To setup code coverage to Karma, we can use the `karma-coverage` plugin.
+Para configurar a cobertura de código para o Karma, precisamos usar o plugin `karma-coverage`.
 
-By default, `karma-coverage` won't use source maps to map the coverage reports. So we need to use `babel-plugin-istanbul` to make sure the coverage is mapped correctly.
+Por padrão, `karma-coverage` não usa mapas de código-fonte para mapear os relatórios de cobertura. Então nós precisamos usar o plugin `babel-plugin-istanbul` para assegurar que a cobertura é corretamente mapeada.
 
-Install `karma-coverage`, `babel-plugin-istanbul`, and `cross-env`:
+Instale `karma-coverage`, `babel-plugin-istanbul`, e `cross-env`:
 
 ```
 npm install --save-dev karma-coverage cross-env
 ```
 
-We're going to use `cross-env` to set a `BABEL_ENV` environment variable. This way we can use `babel-plugin-istanbul` when we're compiling for our tests—we don't want to include `babel-plugin-istanbul` when we compile our production code:
+Nós vamos usar `cross-env` para configurar a variável de ambiente `BABEL_ENV`. Desta maneira nós podemos usar o `babel-plugin-istanbul` quando estamos compilando nossos testes - não queremos incluir o `babel-plugin-istanbul` quando estamos compilando nosso código para produção:
 
 ```
 npm install --save-dev babel-plugin-istanbul
 ```
 
-Update your `.babelrc` file to use `babel-plugin-istanbul` when `BABEL_ENV` is set to test:
+Atualize seu arquivo `.babelrc` para usar o `babel-plugin-istanbul` quando a variável de ambiente `BABEL_ENV` tiver sido configurada para teste:
 
 ```json
 {
@@ -155,7 +155,7 @@ Update your `.babelrc` file to use `babel-plugin-istanbul` when `BABEL_ENV` is s
 }
 ```
 
-Now update the `karma.conf.js` file to use coverage. Add `coverage` to the `reporters` array, and add a `coverageReporter` field:
+Agora atualize o arquivo `karma.conf.js` para usar a cobertura. Adicione `coverage` ao array/opção de `reporters`, e adicione um campo `coverageReporter`:
 
 ```js
 // karma.conf.js
@@ -174,7 +174,7 @@ module.exports = function(config) {
 }
 ```
 
-And update the `test` script to set the `BABEL_ENV`:
+E atualize o script `test` para configurar a variável de ambiente `BABEL_ENV`:
 
 ```json
 // package.json
@@ -185,9 +185,9 @@ And update the `test` script to set the `BABEL_ENV`:
 }
 ```
 
-### Resources
+### Recursos
 
-- [Example project for this setup](https://github.com/eddyerburgh/vue-test-utils-karma-example)
+- [Exemplo de projeto para esta configuração](https://github.com/eddyerburgh/vue-test-utils-karma-example)
 - [Karma](http://karma-runner.github.io/)
 - [Mocha](https://mochajs.org/)
 - [Chai](http://chaijs.com/)
