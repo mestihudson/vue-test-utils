@@ -1,26 +1,26 @@
-## Using with TypeScript
+## Usando com TypeScript
 
-> An example project for this setup is available on [GitHub](https://github.com/vuejs/vue-test-utils-typescript-example).
+> Um exemplo de projeto para esta configuração está disponível no [GitHub](https://github.com/vuejs/vue-test-utils-typescript-example).
 
-TypeScript is a popular superset of JavaScript that adds types and classes on top of regular JS. Vue Test Utils includes types in the distributed package, so it works well with TypeScript.
+TypeScript é um subconjunto de JavaScript que adiciona tipagem e classes no topo da pilha do JS padrão. Vue Test Utils inclue tipos no pacote distribuído, tanto que ele possa trabalhar bem com TypeScript.
 
-In this guide, we'll walk through how to setup a testing setup for a TypeScript project using Jest and Vue Test Utils from a basic Vue CLI TypeScript setup.
+Neste guia, nós vamos passar processo de configuração de um projeto com TypeScript usando o Jest e o Vue Test Utils a partir de uma configuração básica criada pelo Vue CLI para TypeScript.
 
-### Adding TypeScript
+### Adicionando TypeScript
 
-First you need to create a project. If you don't have Vue CLI installed, install it globally:
+Primeiro você precisa criar um projeto. Se você não tem o Vue CLI instalado, faça-o globalmente:
 
 ```shell
 $ npm install -g @vue/cli
 ```
 
-And create a project by running:
+E crie um projeto ao executar:
 
 ```shell
 $ vue create hello-world
 ```
 
-In the CLI prompt, choose to `Manually select features`, select TypeScript, and press enter. This will create a project with TypeScript already configured.
+No prompt de comando do CLI, escolha `Manually select features`, selecione TypeScript, e pressione enter. Isto irá criar um projeto com TypeScript já configurado.
 
 ::: tip NOTE
 If you want a more detailed guide on setting up Vue with TypeScript, checkout the [TypeScript Vue starter guide](https://github.com/Microsoft/TypeScript-Vue-Starter).
