@@ -1,10 +1,10 @@
-## Testing Asynchronous Behavior
+## Testando Comportamento Assíncrono
 
-To simplify testing, Vue Test Utils applies DOM updates _synchronously_. However, there are some techniques you need to be aware of when testing a component with asynchronous behavior such as callbacks or promises.
+Para simplificar o teste, Vue Test Utils aplica atualizações ao DOM _sincronamente_. Todavia, existem algumas técnicas que você precisa estar ciente disso quando testar um componente com comportamento assíncrono tais como funções de callback ou promessas.
 
-One of the most common asynchronous behaviors is API calls and Vuex actions. The following examples shows how to test a method that makes an API call. This example uses Jest to run the test and to mock the HTTP library `axios`. More about Jest manual mocks can be found [here](https://jestjs.io/docs/en/manual-mocks#content).
+Um dos comportamentos assíncronos mais comuns é a chamada de API e ações Vuex. Os seguintes exemplos mostram como testar um método que faz uma chamada a uma API. Este exemplo usa o Jest para executar o teste e mimetizar a biblioteca HTTP `axios`. Mais sobre a mimetização manual do Jest pode ser encontrado [aqui](https://jestjs.io/docs/en/manual-mocks#content).
 
-The implementation of the `axios` mock looks like this:
+A implementação de um mímico para o `axios` se parece com isto:
 
 ```js
 export default {
@@ -12,7 +12,7 @@ export default {
 }
 ```
 
-The below component makes an API call when a button is clicked, then assigns the response to `value`.
+O componente abaixo faz uma chamada a uma API quando o botão é clicado, e então atribui a resposta a `value`.
 
 ```html
 <template>
@@ -39,7 +39,7 @@ The below component makes an API call when a button is clicked, then assigns the
 </script>
 ```
 
-A test can be written like this:
+Um teste pode ser escrito como este:
 
 ```js
 import { shallowMount } from '@vue/test-utils'
@@ -53,7 +53,7 @@ it('fetches async when a button is clicked', () => {
 })
 ```
 
-This test currently fails because the assertion is called before the promise in `fetchResults` resolves. Most unit test libraries provide a callback to let the runner know when the test is complete. Jest and Mocha both use `done`. We can use `done` in combination with `$nextTick` or `setTimeout` to ensure any promises are settled before the assertion is made.
+Este teste, atualmente, falha porque a asserção é chamada antes da promessa em `fetchResults` ter sido resolvida. Muitas bibliotecas de testes unitários provêem uma função de callback para permitir que o executor saiba quando o teste está completo. Tanto o Jest quanto o Mocha usam `done`. Podemos usar `done` em combinação com `$nextTick` ou `setTimeout` para assegurar que quaisquer promessas tenham sido cumpridas antes que a asserção seja feita.
 
 ```js
 it('fetches async when a button is clicked', done => {
@@ -66,11 +66,11 @@ it('fetches async when a button is clicked', done => {
 })
 ```
 
-The reason `setTimeout` allows the test to pass is because the microtask queue where promise callbacks are processed runs before the task queue, where `setTimeout` callbacks are processed. This means by the time the `setTimeout` callback runs, any promise callbacks on the microtask queue will have been executed. `$nextTick` on the other hand schedules a microtask, but since the microtask queue is processed first-in-first-out that also guarantees the promise callback has been executed by the time the assertion is made. See [here](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/) for a more detailed explanation.
+A razão de `setTimeout` permitir que o teste passe é que a fila de microtarefas onde as promessas são processadas rodam antes da fila de tarefas propriamente dita, onde as funções de callback de `setTimeout` são processadas. Isto significa no momento em que o callback de `setTimeout` roda, qualquer promessa na fila de microtarefa ainda será executada. `$nextTick` por outro lado agenda uma microtarefa, mas uma vez que a fila de microtarefas é processada em forma de fila (FIFO, first-in-first-out) que também garante que a promessa tenha sido cumprida no tempo em que a asserção é feita. Veja [aqui](https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/) para uma explicação mais detalhada.
 
-Another solution is to use an `async` function and the npm package `flush-promises`. `flush-promises` flushes all pending resolved promise handlers. You can `await` the call of `flushPromises` to flush pending promises and improve the readability of your test.
+Uma outra solução é usar uma função assíncrona e o pacote npm `flush-promises`. Ele descarrega todos os tratadores de promessas pendentes. Você pode usar `await` ao chamar `flushPromises` para descarregar as promessas pendentes e melhorar a legibilidade de seus testes.
 
-The updated test looks like this:
+O teste atualizado se parece com isto:
 
 ```js
 import { shallowMount } from '@vue/test-utils'
@@ -86,4 +86,4 @@ it('fetches async when a button is clicked', async () => {
 })
 ```
 
-This same technique can be applied to Vuex actions, which return a promise by default.
+Esta mesma técnica pode ser aplicda ações Vuex, que retornam uma promessa por padrão.
